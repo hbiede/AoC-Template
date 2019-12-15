@@ -9,9 +9,9 @@ COOKIE_FILE := cookies.txt
 SESSION ?= ${shell cat ${COOKIE_FILE}}
 YEAR ?= 2019
 
-default: setup
+default: setupDay
 
-setup: download day${DAY}.go
+setupDay: download src/day${DAY}.go
 
 ## Downloads the instructions and inputs for a day (e.g. make DAY=02)
 download: challenges/day${DAY}.md inputs/day${DAY}.txt
