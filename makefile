@@ -19,7 +19,7 @@ download: src/day${DAY}/README.md src/day${DAY}/input.txt
 ## Adjust here when you have created a template file
 src/day${DAY}/solution.go:
 	@echo "${H}=== Copying template for day ${SHORT_DAY} ===${X}"
-	@cat src/template/template.go > src/day${DAY}/solution.go
+	@sed -e "s/!DAY!/${DAY}/g" -e "s/MAIN/main/" src/template/template.go > src/day${DAY}/solution.go
 
 src/day${DAY}/input.txt:
 	@echo "${H}=== Downloading input for day ${SHORT_DAY} ===${X}"
