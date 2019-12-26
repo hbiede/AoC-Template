@@ -122,7 +122,7 @@ def print_table(results: Dict[Tuple[Union[int, Any], int], OrderedDict]) -> None
                               (int(time[1].seconds) / 60) % 60,
                               time[1].seconds % 60, rank[1], score[1]) + NEW_LINE_REPLACER
         else:
-            output_string += ("|  %02s | %02d:%02d:%02d (%5d) (%3d)     | %-26s |" % (day_string,
+            output_string += ("| %4s | %02d:%02d:%02d (%5d) (%3d)     | %26s |" % (day_string,
                                                                                    int((time[0].seconds + 86440 * time[
                                                                                        0].days) / 3600),
                                                                                    (int(time[0].seconds) / 60) % 60,
@@ -195,6 +195,18 @@ def _get_stat_column(results: Dict[Tuple[Union[int, Any], int], Dict], column: s
             col_a[entry[1]] = results[entry]['a'][column]
         if 'b' in results[entry].keys():
             col_b[entry[1]] = results[entry]['b'][column]
+
+    for i in range(1,26):
+        if not(i in col_a):
+            if column == "time":
+                col_a[i] = timedelta(seconds=0)
+            else:
+                col_a[i] = 0
+        if not(i in col_b):
+            if column == "time":
+                col_b[i] = timedelta(seconds=0)
+            else:
+                col_b[i] = 0
     return col_a, col_b
 
 
