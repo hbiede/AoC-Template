@@ -10,7 +10,7 @@ import (
 
 var (
 	partA       = flag.Bool("partA", true, "Perform part A solution?")
-	inputFile   = flag.String("inputFile", "inputs/day!DAY!.txt", "Input File")
+	inputFile   = flag.String("inputFile", "day!DAY!/input.txt", "Input File")
 )
 
 func main() {
