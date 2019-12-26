@@ -190,23 +190,26 @@ def _get_stat_column(results: Dict[Tuple[Union[int, Any], int], Dict], column: s
         -> (Dict[int, Any], Dict[int, Any]):
     col_a = OrderedDict()
     col_b = OrderedDict()
+    maxDayFinished = 0
     for entry in results:
+        if entry[1] > maxDayFinished:
+            maxDayFinished = entry[1]
         if 'a' in results[entry].keys():
             col_a[entry[1]] = results[entry]['a'][column]
         if 'b' in results[entry].keys():
             col_b[entry[1]] = results[entry]['b'][column]
 
-    for i in range(1,26):
+    for i in range(1,maxDayFinished):
         if not(i in col_a):
             if column == "time":
-                col_a[i] = timedelta(seconds=0)
+                col_a[i] = timedelta(seconds=-1)
             else:
-                col_a[i] = 0
+                col_a[i] = -1
         if not(i in col_b):
             if column == "time":
-                col_b[i] = timedelta(seconds=0)
+                col_b[i] = timedelta(seconds=-1)
             else:
-                col_b[i] = 0
+                col_b[i] = -1
     return col_a, col_b
 
 
