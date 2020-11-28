@@ -1,25 +1,28 @@
-# Formatting
+## Setup
+# Removes leading zero from given day
+FILE_EXTENSION := go
+SHORT_DAY := $(shell echo ${DAY} | awk 'sub(/^0*/, "", $$1)')
+COOKIE_FILE := cookies.txt
+SESSION ?= ${shell cat ${COOKIE_FILE}}
+YEAR ?= 2020
+
+## Formatting
 H=$(shell tput -Txterm setaf 3; tput bold)
 B=$(shell tput bold; tput smul)
 X=$(shell tput sgr0)
 
-# Removes leading zero from given day
-SHORT_DAY := $(shell echo ${DAY} | awk 'sub(/^0*/, "", $$1)')
-COOKIE_FILE := cookies.txt
-SESSION ?= ${shell cat ${COOKIE_FILE}}
-YEAR ?= 2019
-
+## Downloads necessary files and clones the template file (e.g. make DAY=02)
 default: setupDay
 
-setupDay: download src/day${DAY}/solution.go
+setupDay: download src/day${DAY}/solution.${FILE_EXTENSION}
 
-## Downloads the instructions and inputs for a day (e.g. make DAY=02)
+## Downloads the instructions and inputs for a day
 download: src/day${DAY}/README.md src/day${DAY}/input.txt
 
 ## Adjust here when you have created a template file
-src/day${DAY}/solution.go:
+src/day${DAY}/solution.ts:
 	@echo "${H}=== Copying template for day ${SHORT_DAY} ===${X}"
-	@sed -e "s/!DAY!/${DAY}/g" -e "s/MAIN/main/" src/template/template.go > src/day${DAY}/solution.go
+	@sed -e "s/!DAY!/${DAY}/g" -e "s/MAIN/main/" src/template/template.${FILE_EXTENSION} > src/day${DAY}/solution.${FILE_EXTENSION}
 
 src/day${DAY}/input.txt:
 	@echo "${H}=== Downloading input for day ${SHORT_DAY} ===${X}"
