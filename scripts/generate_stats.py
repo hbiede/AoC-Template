@@ -37,7 +37,11 @@ def get_stats(cookie: dict, years=None) -> Dict[Tuple[Union[int, Any], int], Ord
         try:
             stats_txt = soup.article.pre.text
         except AttributeError:
-            print("Give a valid session cookie")
+            if year == aoc_now.year and aoc_now.month < 12:
+                print("Must wait until AoC starts")
+            else:
+                print("Give a valid session cookie")
+
             sys.exit(1)
         lines = stats_txt.splitlines()
         lines = [x for x in lines if x.split()[0] in days]
