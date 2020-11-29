@@ -15,12 +15,11 @@ X=$(shell tput sgr0)
 default: setupDay
 
 ## Downloads necessary files and clones the template file (e.g. make DAY=02)
-setupDay: download src/day${DAY}/solution.${FILE_EXTENSION}
+setupDay: src/day${DAY}/solution.${FILE_EXTENSION} download
 
 ## Call to run your code
-run:
-	tsc src/day${DAY}/solution.ts
-	node src/day${DAY}/solution.js
+run: src/day${DAY}/solution.${FILE_EXTENSION}
+	@echo "Setup later"
 
 ## Downloads the instructions and inputs for a day
 download: src/day${DAY}/README.md src/day${DAY}/input.txt
@@ -28,6 +27,7 @@ download: src/day${DAY}/README.md src/day${DAY}/input.txt
 # Adjust here when you have created a template file
 src/day${DAY}/solution.${FILE_EXTENSION}:
 	@echo "${H}=== Copying template for day ${SHORT_DAY} ===${X}"
+	@mkdir -p src/day${DAY}
 	@sed -e "s/!DAY!/${DAY}/g" -e "s/MAIN/main/" src/template/template.${FILE_EXTENSION} > src/day${DAY}/solution.${FILE_EXTENSION}
 
 src/day${DAY}/input.txt:
@@ -40,7 +40,6 @@ src/day${DAY}/README.md: src/day${DAY}/challenge.html
 
 src/day${DAY}/challenge.html:
 	@echo "${H}=== Downloading challenge for day ${SHORT_DAY} ===${X}"
-	@mkdir -p src/day${DAY}
 	@curl -s -b "session=${SESSION}" https://adventofcode.com/${YEAR}/day/${SHORT_DAY} > src/day${DAY}/challenge.html
 
 
