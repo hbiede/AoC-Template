@@ -1,5 +1,6 @@
-# Setup
-FILE_EXTENSION := go
+## Call to run your code
+run: src/day${DAY}/solution.ts
+	ts-node src/day${DAY}/solution.ts
 
 # Removes leading zero from given day
 SHORT_DAY := $(shell echo ${DAY} | awk 'sub(/^0*/, "", $$1)')
@@ -16,20 +17,18 @@ X=$(shell tput sgr0)
 default: setupDay
 
 ## Downloads necessary files and clones the template file (e.g. make DAY=02)
-setupDay: src/day${DAY}/solution.${FILE_EXTENSION} download
+setupDay: solutionFiles download
 
-## Call to run your code
-run: src/day${DAY}/solution.${FILE_EXTENSION}
-	go src/day${DAY}/solution.${FILE_EXTENSION}
+## Create the solution files for the day
+solutionFiles:
+	@echo "${H}=== Copying template for day ${SHORT_DAY} ===${X}"
+	@mkdir -p src/day${DAY}
+	@cp -r src/template/ src/day${DAY}/
+	@sed -i '' -e "s/!DAY!/${DAY}/g" -e "s/MAIN/main/" src/day${DAY}/*.*
+	@sed -i '' -e "s/!DAY!/${DAY}/g" -e "s/MAIN/main/" src/day${DAY}/**/*.*
 
 ## Downloads the instructions and inputs for a day
 download: src/day${DAY}/README.md src/day${DAY}/input.txt
-
-# Adjust here when you have created a template file
-src/day${DAY}/solution.${FILE_EXTENSION}:
-	@echo "${H}=== Copying template for day ${SHORT_DAY} ===${X}"
-	@mkdir -p src/day${DAY}
-	@sed -e "s/!DAY!/${DAY}/g" -e "s/MAIN/main/" src/template/template.${FILE_EXTENSION} > src/day${DAY}/solution.${FILE_EXTENSION}
 
 src/day${DAY}/input.txt:
 	@echo "${H}=== Downloading input for day ${SHORT_DAY} ===${X}"
