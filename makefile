@@ -1,6 +1,6 @@
 ## Call to run your code
-run: src/day${DAY}/solution.ts
-	ts-node src/day${DAY}/solution.ts
+run: 
+	@echo "You must set this up, pal..."
 
 # Removes leading zero from given day
 SHORT_DAY := $(shell echo ${DAY} | awk 'sub(/^0*/, "", $$1)')
