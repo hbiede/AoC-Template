@@ -1,5 +1,5 @@
 # AoC-Template
-[Advent of Code](adventofcode.com) Solutions for (YEAR) in (LANGUAGE).
+[Advent of Code](https://adventofcode.com) Solutions for (YEAR) in (LANGUAGE).
 
 ## Highlights:
 
