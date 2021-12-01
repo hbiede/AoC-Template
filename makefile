@@ -1,3 +1,6 @@
+## Alias for setupDay (used to call `make DAY=X`)
+default: setupDay
+
 ## Call to run your code
 run: 
 	@echo "You must set this up, pal..."
@@ -12,9 +15,6 @@ YEAR ?= 2020
 H=$(shell tput -Txterm setaf 3; tput bold)
 B=$(shell tput bold; tput smul)
 X=$(shell tput sgr0)
-
-## Alias for setupDay (used to call `make DAY=X`)
-default: setupDay
 
 ## Downloads necessary files and clones the template file (e.g. make DAY=02)
 setupDay: solutionFiles download
