@@ -9,7 +9,7 @@ run:
 SHORT_DAY := $(shell echo ${DAY} | awk 'sub(/^0*/, "", $$1)')
 COOKIE_FILE := cookies.txt
 SESSION ?= ${shell cat ${COOKIE_FILE}}
-YEAR ?= date +"%Y"
+YEAR ?= ${shell date +"%Y"}
 
 # Formatting
 H=$(shell tput -Txterm setaf 3; tput bold)
