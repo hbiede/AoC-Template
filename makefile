@@ -7,6 +7,7 @@ run:
 
 # Removes leading zero from given day
 SHORT_DAY := $(shell echo ${DAY} | awk 'sub(/^0*/, "", $$1)')
+LONG_DAY := $(shell printf "%02d" ${DAY})
 COOKIE_FILE := cookies.txt
 SESSION ?= ${shell cat ${COOKIE_FILE}}
 YEAR ?= ${shell date +"%Y"}
@@ -22,25 +23,25 @@ setupDay: solutionFiles download
 ## Create the solution files for the day
 solutionFiles:
 	@echo "${H}=== Copying template for day ${SHORT_DAY} ===${X}"
-	@mkdir -p src/day${DAY}
-	@cp -r template/ src/day${DAY}/
-	@-sed -i '' -e "s/!DAY!/${DAY}/g" src/day${DAY}/*.*
-	@-sed -i '' -e "s/!DAY!/${DAY}/g" src/day${DAY}/**/*.*
+	@mkdir -p src/day${LONG_DAY}
+	@cp -r template/ src/day${LONG_DAY}/
+	@-sed -i '' -e "s/!DAY!/${LONG_DAY}/g" src/day${LONG_DAY}/*.*
+	@-sed -i '' -e "s/!DAY!/${LONG_DAY}/g" src/day${LONG_DAY}/**/*.*
 
 ## Downloads the instructions and inputs for a day
 download: src/day${DAY}/README.md src/day${DAY}/input.txt
 
-src/day${DAY}/input.txt:
+src/day${LONG_DAY}/input.txt:
 	@echo "${H}=== Downloading input for day ${SHORT_DAY} ===${X}"
-	@curl -s -b "session=${SESSION}" https://adventofcode.com/${YEAR}/day/${SHORT_DAY}/input > src/day${DAY}/input.txt
+	@curl -s -b "session=${SESSION}" https://adventofcode.com/${YEAR}/day/${SHORT_DAY}/input > src/day${LONG_DAY}/input.txt
 
-src/day${DAY}/README.md: src/day${DAY}/challenge.html
+src/day${LONG_DAY}/README.md: src/day${LONG_DAY}/challenge.html
 	@echo "${H}=== Parsing input ===${X}"
-	@./scripts/parse_challenge.sh ${DAY}
+	@./scripts/parse_challenge.sh ${LONG_DAY}
 
-src/day${DAY}/challenge.html:
+src/day${LONG_DAY}/challenge.html:
 	@echo "${H}=== Downloading challenge for day ${SHORT_DAY} ===${X}"
-	@curl -s -b "session=${SESSION}" https://adventofcode.com/${YEAR}/day/${SHORT_DAY} > src/day${DAY}/challenge.html
+	@curl -s -b "session=${SESSION}" https://adventofcode.com/${YEAR}/day/${SHORT_DAY} > src/day${LONG_DAY}/challenge.html
 
 
 ## Update the readme with the latest AoC stats
