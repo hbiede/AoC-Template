@@ -9,6 +9,6 @@ The README_template.md must contain "STATS_TABLE" to be replaced by the generate
 1. Run `make setup`
 
 ## Usage
-1. Run `make DAY=XX` (e.g., `make DAY=01`) to download the challenge input and README
-1. After completing part 1, run the command again to update the day's README with part 2's description
+1. Run `make DAY=XX` (e.g., `make DAY=1`) to download the challenge input and README
+1. After completing part 1, run `make download DAY=XX` to update the day's README with part 2's description
 3. After completing part 2, run `make stats` to update the main README
