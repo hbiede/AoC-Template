@@ -23,7 +23,7 @@ setupDay: solutionFiles download
 solutionFiles:
 	@echo "${H}=== Copying template for day ${SHORT_DAY} ===${X}"
 	@mkdir -p src/day${DAY}
-	@cp -r src/template/ src/day${DAY}/
+	@cp -r template/ src/day${DAY}/
 	@-sed -i '' -e "s/!DAY!/${DAY}/g" -e "s/MAIN/main/" src/day${DAY}/*.*
 	@-sed -i '' -e "s/!DAY!/${DAY}/g" -e "s/MAIN/main/" src/day${DAY}/**/*.*
 
@@ -52,7 +52,7 @@ stats:
 ## Create necessary files for the new repo
 setup:
 	@echo "${H}=== Creating Necessary Directories ===${X}"
-	@mkdir -p src/template
+	@mkdir -p template
 	@echo "${H}=== Create a template file and adjust the indicated recipe ===${X}"
 
 ## Call `make cookie SESSION=${}` to set the cookie used to download your input text
