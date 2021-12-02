@@ -24,8 +24,8 @@ solutionFiles:
 	@echo "${H}=== Copying template for day ${SHORT_DAY} ===${X}"
 	@mkdir -p src/day${DAY}
 	@cp -r template/ src/day${DAY}/
-	@-sed -i '' -e "s/!DAY!/${DAY}/g" -e "s/MAIN/main/" src/day${DAY}/*.*
-	@-sed -i '' -e "s/!DAY!/${DAY}/g" -e "s/MAIN/main/" src/day${DAY}/**/*.*
+	@-sed -i '' -e "s/!DAY!/${DAY}/g" src/day${DAY}/*.*
+	@-sed -i '' -e "s/!DAY!/${DAY}/g" src/day${DAY}/**/*.*
 
 ## Downloads the instructions and inputs for a day
 download: src/day${DAY}/README.md src/day${DAY}/input.txt
