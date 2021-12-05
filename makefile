@@ -25,6 +25,7 @@ solutionFiles:
 	@echo "${H}=== Copying template for day ${SHORT_DAY} ===${X}"
 	@mkdir -p src/day${LONG_DAY}
 	@cp -r template/ src/day${LONG_DAY}/
+	@git add src/day${LONG_DAY}
 	@-sed -i '' -e "s/!DAY!/${LONG_DAY}/g" src/day${LONG_DAY}/*.*
 	@-sed -i '' -e "s/!DAY!/${LONG_DAY}/g" src/day${LONG_DAY}/**/*.*
 
@@ -34,10 +35,12 @@ download: src/day${DAY}/README.md src/day${DAY}/input.txt
 src/day${LONG_DAY}/input.txt:
 	@echo "${H}=== Downloading input for day ${SHORT_DAY} ===${X}"
 	@curl -s -b "session=${SESSION}" https://adventofcode.com/${YEAR}/day/${SHORT_DAY}/input > src/day${LONG_DAY}/input.txt
+	@git add src/day${LONG_DAY}/input.txt
 
 src/day${LONG_DAY}/README.md: src/day${LONG_DAY}/challenge.html
 	@echo "${H}=== Parsing input ===${X}"
 	@./scripts/parse_challenge.sh ${LONG_DAY}
+	@git add src/day${LONG_DAY}/README.md
 
 src/day${LONG_DAY}/challenge.html:
 	@echo "${H}=== Downloading challenge for day ${SHORT_DAY} ===${X}"
