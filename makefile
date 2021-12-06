@@ -57,6 +57,7 @@ stats:
 setup:
 	@echo "${H}=== Creating Necessary Directories ===${X}"
 	@mkdir -p template
+	@chmod +x scripts/*
 	@pip3 install -r scripts/requirements.txt
 	@echo "${H}=== Create a template file and adjust the indicated recipe ===${X}"
 
