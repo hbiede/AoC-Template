@@ -30,7 +30,7 @@ solutionFiles:
 	@-sed -i '' -e "s/!DAY!/${LONG_DAY}/g" src/day${LONG_DAY}/**/*.*
 
 ## Downloads the instructions and inputs for a day
-download: src/day${DAY}/README.md src/day${DAY}/input.txt
+download: src/day${LONG_DAY}/README.md src/day${LONG_DAY}/input.txt
 
 src/day${LONG_DAY}/input.txt:
 	@echo "${H}=== Downloading input for day ${SHORT_DAY} ===${X}"
