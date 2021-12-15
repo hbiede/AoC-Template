@@ -14,7 +14,7 @@ import io
 
 NEW_LINE_REPLACER = "~~"
 OUTPUT_DIR = "statsImages/"
-VERSION = 1.2
+VERSION = 1.1
 USER_AGENT = {"User-Agent": "advent-of-code-stats-gen v{}".format(VERSION)}
 
 
@@ -65,8 +65,8 @@ def get_stats(cookie: dict, years=None) -> Dict[Tuple[Union[int, Any], int], Ord
 
 def _get_second_count(data: Tuple[Dict[int, timedelta], Dict[int, timedelta]]) -> \
         (Dict[int, int], Dict[int, int]):
-    time_a = {k: v.days * 1440 + v.seconds / 60 for k, v in data[0].items()}
-    time_b = {k: v.days * 1440 + v.seconds / 60 for k, v in data[1].items()}
+    time_a = {k: (None if v >= timedelta(hours=24) else v.days * 1440 + v.seconds / 60) for k, v in data[0].items()}
+    time_b = {k: (None if v >= timedelta(hours=24) else v.days * 1440 + v.seconds / 60) for k, v in data[1].items()}
     return time_a, time_b
 
 
@@ -102,7 +102,7 @@ def _average(data: list) -> float:
     sum_of_values = 0
     count = 0
     for value in data:
-        if value != -1:
+        if value != -1 and value is not None:
             sum_of_values += value
             count += 1
     return 0 if count == 0 else sum_of_values / count
@@ -113,7 +113,7 @@ def _generate_standard_average(data: list) -> list:
 
 
 def _generate_moving_average(data: list) -> list:
-    return [_average(data[day - 5 if day >= 5 else 0:day]) for day in range(1, len(data) + 1)]
+    return [_average(data[max(0, day - 5):day]) for day in range(1, len(data) + 1)]
 
 
 def _generate_graph(data: Dict, output_file="output.png", y_axis="", x_axis="Day", title=""):
@@ -175,6 +175,17 @@ def generate_graphs(results: Dict[Tuple[Union[int, Any], int], OrderedDict]) -> 
     _generate_graph(score_b, y_axis="Score", title="Part 2 Score", output_file=OUTPUT_DIR + "part2score.png")
 
 
+def _get_day_string(time: timedelta, rank: int, score: int, scored=False) -> str:
+    if time == timedelta(hours=24):
+        return "✅"
+    return "%02d:%02d:%02d (%5d) %s" % (
+        time.seconds // 3600,
+        time.seconds // 60 % 60,
+        time.seconds % 60,
+        rank,
+        (" (%3d)   " % score) if scored else "",
+    )
+
 def get_table(results: Dict[Tuple[Union[int, Any], int], OrderedDict]) -> None:
     # Note: the ~~ is necessary to side-step the issue of eval not saving new lines in makefiles
     scored = False
@@ -217,18 +228,11 @@ def get_table(results: Dict[Tuple[Union[int, Any], int], OrderedDict]) -> None:
             total_rank[1] += results[entry]['b']['rank']
             score[1] = results[entry]['b']['score']
             total_score[1] += results[entry]['b']['score']
-            output_string += "|  %02s | %02d:%02d:%02d (%5d) %s  | %02d:%02d:%02d (%5d) %s  |" % \
+            output_string += ("| %03s | %-26s | %-26s |" if scored else "| %03s | %-18s | %-18s |") % \
                              (day_string,
-                              int((time[0].seconds + 86440 * time[0].days) / 3600),
-                              (int(time[0].seconds) / 60) % 60,
-                              time[0].seconds % 60,
-                              rank[0],
-                              ("(%3d)   " % score[0]) if scored else "",
-                              int((time[1].seconds + 86440 * time[1].days) / 3600),
-                              (int(time[1].seconds) / 60) % 60,
-                              time[1].seconds % 60,
-                              rank[1],
-                              ("(%3d)   " % score[1]) if scored else "") + NEW_LINE_REPLACER
+                              _get_day_string(time[0], rank[0], score[0], scored=scored),
+                              _get_day_string(time[1], rank[0], score[0], scored=scored)
+                            ) + NEW_LINE_REPLACER
         else:
             output_string += ("|  %02s | %02d:%02d:%02d (%5d) %s  | %-26s |" % (day_string,
                                                                                       int((time[0].seconds + 86440 *
